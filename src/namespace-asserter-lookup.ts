@@ -1,9 +1,13 @@
 import {Maybe, some} from "./fp/maybe.model.ts";
 import {install} from "./install-namespace-asserter.ts";
 import type {Result} from "./fp/result.model.ts";
-
+import { dddAsserter } from "./ddd-asserter.ts";
 const findAsserterLocally = async (namespace: Namespace): Promise<Maybe<Asserter>> => {
     // return none();
+    if(namespace === 'ddd'){
+        return some(dddAsserter);
+    }
+        
     return some((dragees) => `not implemented yet for namespace: ${namespace}`);
 }
 

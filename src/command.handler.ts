@@ -12,6 +12,9 @@ export const handler = async (argument, options: Options) => {
     const dragees = await lookupForDragees(options.fromDir);
     const namespaces = await lookupForNamespaces(dragees);
     const asserters: Asserter[] = await lookupForAsserters(namespaces);
-
+    console.log('namespaces')
+    console.log(namespaces)
+    console.log('asserters')
+    console.log(asserters)
     asserters.forEach(asserter => processAsserters(asserters, dragees));
 }
