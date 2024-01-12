@@ -1,9 +1,11 @@
 export const asserter = (dragees: Dragee[]) => {
     
-    aggregateHasOnlyValueObjectsOrEntities(dragees);
+    const aggregateRuleResult = aggregateHasOnlyValueObjectsOrEntities(dragees);
     
-    repositoriesAreOnlyInServices(dragees)
+    const repositoryRuleResult = repositoriesAreOnlyInServices(dragees)
+    
 
+    return aggregateRuleResult + repositoryRuleResult;
 };
 
 const dependenciesOf = (rootDragee: Dragee, dragees: Dragee[]) => {
@@ -11,29 +13,31 @@ const dependenciesOf = (rootDragee: Dragee, dragees: Dragee[]) => {
     return dragees.filter(dragee => depends.includes(dragee.name));
 }
 
-const aggregateHasOnlyValueObjectsOrEntities = (dragees: Dragee[]) => {
+const aggregateHasOnlyValueObjectsOrEntities: RuleResult = (dragees: Dragee[]) => {
     const aggregates = dragees.filter(dragee => dragee.kind_of === 'ddd/aggregate');
+    let result = "";
     aggregates.forEach((aggregate: Dragee) => {
         dependenciesOf(aggregate, dragees).forEach( (aggregateDependency: Dragee) => {
             const isValid = ['ddd/value_object', 'ddd/entity'].includes(aggregateDependency.kind_of);
             if(!isValid){
-                console.log("The aggregate dependency " + aggregateDependency.name +" is not an entity or a value object" );
+                result += " / The aggregate dependency " + aggregateDependency.name +" is not an entity or a value object";
             }
         });
     });
+    return result;
 }
 
-const repositoriesAreOnlyInServices = (dragees: Dragee[]) => {
+const repositoriesAreOnlyInServices: RuleResult = (dragees: Dragee[]) => {
     const services = dragees.filter(dragee => dragee.kind_of === 'ddd/service');
-
+    let result = "";
     services.forEach(service => {
         dependenciesOf(service, dragees).forEach((serviceDependency: Dragee) => {
             const isValid = serviceDependency.kind_of === "ddd/repository";
             if(!isValid){
-                console.log("The service dependency " + serviceDependency.name +" is not a repository" );
+               result +=  " / The service dependency " + serviceDependency.name +" is not a repository";
             }
         })  
     })
-    
+    return result;
 }
 

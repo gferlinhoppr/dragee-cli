@@ -17,4 +17,6 @@ type Namespace = string;
 
 type Report = string;
 
+type RuleResult = string;
+
 type Asserter = (dragees: Dragee[]) => Report;
