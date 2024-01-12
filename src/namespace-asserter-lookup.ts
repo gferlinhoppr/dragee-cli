@@ -33,5 +33,5 @@ export const lookupForAsserters = async (namespaces: Namespace[]): Promise<Asser
         asserters.push(asserter);
     }
 
-    return asserters.map(asserter => asserter());
+    return asserters;
 };

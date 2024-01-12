@@ -1,5 +1,7 @@
 import {expect, test, describe} from "bun:test";
 
+const dragees = Bun.env.dragees;
+
 const asserter = (dragees: Dragee[]) => {
     const aggregates = dragees.filter(dragee => dragee.kind_of === 'ddd/aggregate');
     const services = dragees.filter(dragee => dragee.kind_of === 'ddd/service');
@@ -31,55 +33,4 @@ const asserter = (dragees: Dragee[]) => {
     })
 }
 
-asserter(
-    [
-        {
-            name: 'toto',
-            kind_of: 'ddd/aggregate',
-            depends_on:
-                {
-                    'tutu': [
-                        'field'
-                    ] ,
-                    'titi': [
-                        'field'
-                    ] ,
-                    'foo': [
-                        'field'
-                    ]
-                    
-                }
-        }, 
-        {
-            name: 'tutu',
-            kind_of: 'ddd/value_object',
-            depends_on: []
-        },
-        {
-            name:'titi',
-            kind_of: 'ddd/value_object'
-        },
-        {
-            name:'foo',
-            kind_of: 'ddd/entity'
-        }
-    ]
-);
-
-asserter([
-    {
-        name: 'toto',
-        kind_of: 'ddd/service',
-        depends_on:
-            {
-                'tutu': [
-                    'field'
-                ] 
-            }
-    }, 
-    {
-        name: 'tutu',
-        kind_of: 'ddd/repository',
-        depends_on: []
-    }
-])
+asserter(JSON.parse(dragees as string));
