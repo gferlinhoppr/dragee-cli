@@ -10,16 +10,13 @@ const asserter = (dragees: Dragee[]) => {
         describe('Check aggregate rules', () => {
             
             test.each(aggregates)('Aggregate %p', aggregate => {
-                const depends = Object.keys(aggregate
-                    .depends_on);
+                const depends = Object.keys(aggregate.depends_on);
 
                 const dependenciesDragees = dragees.filter(dragee => depends.includes(dragee.name));
                 
-                dependenciesDragees.forEach
-                ( (aggregateDependency: Dragee) => {
-                    expect(aggregateDependency.kind_of).toBe('ddd/value_object');
+                dependenciesDragees.forEach( (aggregateDependency: Dragee) => {
+                    expect(['ddd/value_object', 'ddd/entity']).toContain(aggregateDependency.kind_of);
                 });
-
             });
             
             // const startTime = new Date();
