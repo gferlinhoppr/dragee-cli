@@ -2,6 +2,7 @@ import {expect, test, describe} from "bun:test";
 
 const asserter = (dragees: Dragee[]) => {
     const aggregates = dragees.filter(dragee => dragee.kind_of === 'ddd/aggregate');
+    const services = dragees.filter(dragee => dragee.kind_of === 'ddd/service');
     describe('Namespace: DDD', () => {
         test.each(dragees)('Dragee %p', (dragee: Dragee) => {
             expect(dragee).not.toBeUndefined();
@@ -18,12 +19,19 @@ const asserter = (dragees: Dragee[]) => {
                     expect(['ddd/value_object', 'ddd/entity']).toContain(aggregateDependency.kind_of);
                 });
             });
-            
-            // const startTime = new Date();
-            // while (new Date().getTime() - startTime.getTime() < 10000) {}
-            // debugger;
 
         });
+        describe('Check service rules', () => {
+            test.each(services)('Service %p', service => {
+                const depends = Object.keys(service.depends_on);
+
+                const dependenciesDragees = dragees.filter(dragee => depends.includes(dragee.name));
+                
+                dependenciesDragees.forEach( (serviceDependency: Dragee) => {
+                    expect(serviceDependency.kind_of).toBe('ddd/repository');
+                });
+            });
+        })
     })
 }
 
@@ -61,3 +69,21 @@ asserter(
         }
     ]
 );
+
+asserter([
+    {
+        name: 'toto',
+        kind_of: 'ddd/service',
+        depends_on:
+            {
+                'tutu': [
+                    'field'
+                ] 
+            }
+    }, 
+    {
+        name: 'tutu',
+        kind_of: 'ddd/repository',
+        depends_on: []
+    }
+])
