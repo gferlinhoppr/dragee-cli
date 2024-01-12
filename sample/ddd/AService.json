@@ -1,1 +1,3 @@
-{"name":"io.dragee.annotation.ddd.sample.AService","kind_of":"ddd/service","depends_on":{}}
+{"name":"io.dragee.annotation.ddd.sample.AService","kind_of":"ddd/service","depends_on":{
+    "io.dragee.annotation.ddd.sample.ARepository": ["field"]
+}}
