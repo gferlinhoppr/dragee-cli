@@ -1,1 +1,9 @@
-{"name":"io.dragee.annotation.ddd.sample.AnAggregate","kind_of":"ddd/aggregate","depends_on":{}}
+{
+    "name":"io.dragee.annotation.ddd.sample.AnAggregate",
+    "kind_of":"ddd/aggregate",
+    "depends_on":
+    {
+        "io.dragee.annotation.ddd.sample.AValueObject": ["field"],
+        "io.dragee.annotation.ddd.sample.AnEntity": ["field"]
+    }
+}
