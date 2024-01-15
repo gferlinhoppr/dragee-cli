@@ -1,3 +1,5 @@
+import type {Result} from "./fp/result.model.ts";
+
 enum DependencyType {
     CONSTRUCTOR = 'constructor',
     FIELD = 'field',
@@ -20,5 +22,9 @@ type Report = {
     pass: boolean,
     errors: string[],
 };
+
+type RuleResult = Result<boolean>[]
+
+type Rule = (dragees: Dragee[]) => RuleResult
 
 type Asserter = (dragees: Dragee[]) => Report;
