@@ -5,7 +5,8 @@ enum DependencyType {
     METHOD_RETURN = 'method_return'
 }
 
-interface Dependency extends Record<string, DependencyType>{}
+interface Dependency extends Record<string, DependencyType> {
+}
 
 interface Dragee {
     name: string,
@@ -15,6 +16,8 @@ interface Dragee {
 
 type Namespace = string;
 
-type Report = string;
+type Report = {
+    pass: boolean
+};
 
 type Asserter = (dragees: Dragee[]) => Report;
