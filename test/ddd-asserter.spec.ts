@@ -59,6 +59,49 @@ describe('DDD Asserter', () => {
                 )
             })
         })
+        describe('An aggregate must at least contains one entity', () => {
+            test('Rule passed', () => {
+                const valueObjectDragee: Dragee = {
+                    name: 'AValueObject',
+                    kind_of: 'ddd/value_object',
+                }
+                const entityDragee: Dragee = {
+                    name: 'AEntity',
+                    kind_of: 'ddd/entity',
+                }
+                const aggregateDragee: Dragee = {
+                    name: 'AnAggregate',
+                    kind_of: 'ddd/aggregate',
+                    depends_on: {
+                        'AEntity': ['field'],
+                        'AValueObject': ['field'],
+                    }
+                }
+ 
+                const report = asserter([valueObjectDragee, entityDragee, aggregateDragee]);
+
+                expect(report.pass).toBeTrue();
+            })
+
+            test('Rule failed', () => {
+                const valueObjectDragee: Dragee = {
+                    name: 'AValueObject',
+                    kind_of: 'ddd/value_object',
+                }
+                const aggregateDragee: Dragee = {
+                    name: 'AnAggregate',
+                    kind_of: 'ddd/aggregate',
+                    depends_on: {
+                        'AValueObject': ['field'],
+                    }
+                }
+
+                const report = asserter([valueObjectDragee, aggregateDragee]);
+
+                expect(report.pass).toBeFalse();
+                expect(report.errors).toContain('The aggregate "AnAggregate" must at least contain a "ddd/entity" type dragee')
+            })
+        })
     })
     describe('Repository Rules', () => {
         describe('A repository must be called only inside a Service', () => {
