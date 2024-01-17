@@ -93,6 +93,34 @@ describe('DDD Asserter', () => {
                     'The repository "ARepository" must not be a dependency of "ddd/value_object"'
                 )
             })
+            test('Rule failed multiple repositories in same dragee', () => {
+                const repositoryDragee1: Dragee = {
+                    name: 'ARepository1',
+                    kind_of: 'ddd/repository',
+                }
+                const repositoryDragee2: Dragee = {
+                    name: 'ARepository2',
+                    kind_of: 'ddd/repository',
+                }
+                const valueObjectDragee: Dragee = {
+                    name: 'AValueObject',
+                    kind_of: 'ddd/value_object',
+                    depends_on: {
+                        'ARepository1': ['field'],
+                        'ARepository2': ['field']
+                    }
+                }
+
+                const report = asserter([repositoryDragee1, repositoryDragee2, valueObjectDragee])
+
+                expect(report.pass).toBeFalse()
+                expect(report.errors).toContain(
+                    'The repository "ARepository1" must not be a dependency of "ddd/value_object"'
+                )
+                expect(report.errors).toContain(
+                    'The repository "ARepository2" must not be a dependency of "ddd/value_object"'
+                )
+            })
         })
     })
 })
