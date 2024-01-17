@@ -123,4 +123,42 @@ describe('DDD Asserter', () => {
             })
         })
     })
+
+    describe('Value object rules', () => {
+        describe('Should only contains entities', () => {
+            test('Test pass', () => {
+                const entityDragee: Dragee = {
+                    name: 'AEntity',
+                    kind_of: 'ddd/entity',
+                }
+                const valueObjectDragee: Dragee = {
+                    name: 'AValueObject',
+                    kind_of: 'ddd/value_object',
+                    depends_on: {
+                        'AEntity': ['field']
+                    }
+                }
+                const report = asserter([entityDragee, valueObjectDragee])
+
+                expect(report.pass).toBeTrue();
+            })
+            test('Test does not pass', () => {
+                const entityDragee: Dragee = {
+                    name: 'AService',
+                    kind_of: 'ddd/service',
+                }
+                const valueObjectDragee: Dragee = {
+                    name: 'AValueObject',
+                    kind_of: 'ddd/value_object',
+                    depends_on: {
+                        'AService': ['field']
+                    }
+                }
+                const report = asserter([entityDragee, valueObjectDragee])
+
+                expect(report.pass).toBeFalse();
+                expect(report.errors).toContain('The value object "AValueObject" must not have any dependency of type "ddd/service"')
+            })
+        })
+    })
 })
