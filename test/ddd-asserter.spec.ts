@@ -136,14 +136,19 @@ describe('DDD Asserter', () => {
                     name: 'AEntity',
                     kind_of: 'ddd/entity',
                 }
+                const valueObjectDependencyDragee : Dragee= {
+                    name: 'AValueObject2',
+                    kind_of: 'ddd/value_object'
+                }
                 const valueObjectDragee: Dragee = {
                     name: 'AValueObject',
                     kind_of: 'ddd/value_object',
                     depends_on: {
-                        'AEntity': ['field']
+                        'AEntity': ['field'],
+                        'AValueObject2': ['field']
                     }
                 }
-                const report = asserter([entityDragee, valueObjectDragee])
+                const report = asserter([valueObjectDependencyDragee, entityDragee, valueObjectDragee])
 
                 expect(report.pass).toBeTrue();
             })

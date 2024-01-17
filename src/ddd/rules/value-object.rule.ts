@@ -7,7 +7,7 @@ const rule: RuleResult = (dragees: Dragee[]) => {
     return valueObjects.map(valueObject => {
         return dependenciesOf(valueObject, dragees)
             .map(dependencyDragee => {
-                if (isEntity(dependencyDragee)) {
+                if (isEntity(dependencyDragee) || isValueObject(dependencyDragee)) {
                     return ok<boolean>(true)
                 } else {
                     return ko<boolean>(new Error(`The value object "${valueObject.name}" must not have any dependency of type "${dependencyDragee.kind_of}"`))
