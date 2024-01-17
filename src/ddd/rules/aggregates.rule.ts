@@ -1,15 +1,5 @@
 import {ko, ok} from "../../fp/result.model.ts";
-
-const dependenciesOf: Dragee[] = (dragee: Dragee, allDragees: Dragee[]) => {
-    return Object.keys(dragee.depends_on)
-        .map(dependency => allDragees.find(dragee => dragee.name === dependency))
-        .filter(dragee => dragee !== undefined)
-}
-
-const isAggregate: boolean = (dragee: Dragee) => dragee.kind_of === 'ddd/aggregate'
-const isValueObject: boolean = (dragee: Dragee) => dragee.kind_of === 'ddd/value_object'
-const isEntity: boolean = (dragee: Dragee) => dragee.kind_of === 'ddd/entity'
-const isEvent: boolean = (dragee: Dragee) => dragee.kind_of === 'ddd/event'
+import { dependenciesOf, isAggregate, isValueObject, isEntity, isEvent } from "../ddd-rules.utils.ts";
 
 const rule: RuleResult = (dragees: Dragee[]) => {
     const aggregates = dragees.filter(dragee => isAggregate(dragee))

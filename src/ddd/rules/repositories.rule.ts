@@ -1,7 +1,5 @@
 import {ko, ok} from "../../fp/result.model.ts";
-
-const isRepository: boolean = (dragee: Dragee) => dragee.kind_of === 'ddd/repository'
-const isService: boolean = (dragee: Dragee) => dragee.kind_of === 'ddd/service'
+import { isRepository, isService } from "../ddd-rules.utils.ts";
 
 const rule: RuleResult = (dragees: Dragee[]) => {
     const repositoryNames = dragees
