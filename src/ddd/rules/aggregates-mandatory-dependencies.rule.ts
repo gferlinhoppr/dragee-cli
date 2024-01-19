@@ -1,5 +1,5 @@
 import {ko, ok} from "../../fp/result.model.ts";
-import { dependenciesOf, isAggregate, isValueObject, isEntity, isEvent } from "../ddd-rules.utils.ts";
+import { dependenciesOf, isAggregate, isEntity } from "../ddd-rules.utils.ts";
 
 const rule: RuleResult = (dragees: Dragee[]) => {
     const aggregates = dragees.filter(dragee => isAggregate(dragee))
@@ -18,6 +18,6 @@ const rule: RuleResult = (dragees: Dragee[]) => {
         .flatMap(result => result)
 }
 
-export const AggregateMandatoryRule = {
+export const AggregateMandatoryDependencyRule = {
     apply: rule
 }

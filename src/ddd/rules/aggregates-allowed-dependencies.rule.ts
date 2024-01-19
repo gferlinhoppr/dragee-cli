@@ -20,6 +20,6 @@ const rule: RuleResult = (dragees: Dragee[]) => {
         .flatMap(result => result)
 }
 
-export const AggregateDependencyRule = {
+export const AggregateAllowedDependencyRule = {
     apply: rule
 }
